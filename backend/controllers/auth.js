@@ -5,7 +5,8 @@ var jwt = require('jsonwebtoken');
 const {hashPassword } = require("../functions/functions");
 
 exports.logout = (req, res)=>{
-  res.send('user signed out!');
+  res.clearCookie('user');
+  res.sendStatus(200);
 };
 
 
@@ -17,8 +18,7 @@ exports.signup = async (req,res) => {
     if(err){
       res.status(400).json(err);
     }
-
-    res.json(user);
+    res.sendStatus(200);
   });
 }catch{
   res.send('not able to register user');
@@ -39,12 +39,14 @@ exports.login =   (req, res) => {
        if (result){
          var token = jwt.sign({ email: req.body.email }, process.env.SECRET);
 
-        res.status(200).json({token: token});
+         res.cookie('user', token);
+         res.sendStatus(200);
+        //res.status(200).json({token: token});
 
 
-        // Send JWT
+
       } else {
-        // response is OutgoingMessage object that server response http request
+
          res.json({success: false, message: 'passwords do not match'});
       }
 

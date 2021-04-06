@@ -3,6 +3,7 @@ require('dotenv').config();
 const cors = require('cors');
 const mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 const {isAuthorised} = require("./functions/functions");
@@ -21,7 +22,8 @@ mongoose.connect('mongodb://localhost/vanna',
 });
 
 //middleware
-app.use(bodyParser.json())
+app.use(cookieParser());
+app.use(bodyParser.json());
 app.use(cors());
 
 
